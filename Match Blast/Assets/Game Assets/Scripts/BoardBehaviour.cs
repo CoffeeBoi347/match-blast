@@ -13,7 +13,7 @@ public class BoardBehaviour : MonoBehaviour
 
     [Header("Storing Gems")]
     public Gem[,] gemReferences;
-
+    public GameObject tilesStoredObj;
     public GameObject gemsStoreObj;
 
     private void Start()
@@ -30,7 +30,7 @@ public class BoardBehaviour : MonoBehaviour
             for (int y = 0; y < cols; y++)
             {
                 Vector2 tilePosition = new Vector2(x + spacingFactorX, y + spacingFactorY);
-                GameObject backgroundTile = Instantiate(tileReference, tilePosition, Quaternion.identity, gemsStoreObj.transform);
+                GameObject backgroundTile = Instantiate(tileReference, tilePosition, Quaternion.identity, tilesStoredObj.transform);
                 tileReferences[x, y] = backgroundTile;
 
                 int gemToUse = Random.Range(0, gems.Length);
@@ -46,5 +46,10 @@ public class BoardBehaviour : MonoBehaviour
         gemReferences[x, y] = gemSpawned;
         Vector2Int gemPosVector2Int = Vector2Int.RoundToInt(gemPosition);
         gemSpawned.StoreGems(gemPosVector2Int, this);
+    }
+
+    public Gem GetGem(int x, int y)
+    {
+        return gemReferences[x, y];
     }
 }

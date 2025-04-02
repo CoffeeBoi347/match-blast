@@ -13,7 +13,7 @@ public class Gem : MonoBehaviour
     public Vector2 firstTouchPosition;
     public Vector2 finalTouchPosition;
     private float swapAngle = 0f;
-    private bool mousePressed = false;
+    public float threshold = 0.5f;
     private void Start()
     {
         boardBehaviour = FindObjectOfType<BoardBehaviour>();
@@ -21,10 +21,13 @@ public class Gem : MonoBehaviour
 
     private void Update()
     {
-        if (mousePressed && Input.GetMouseButtonUp(0))
+        Debug.Log($"FIRST TOUCH POSITION : {firstTouchPosition}. FINAL TOUCH POSITION {finalTouchPosition}");
+        if (Input.GetMouseButtonUp(0))
         {
             finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            SwapAngle();
+
+            firstTouchPosition = Vector3.zero;
+            finalTouchPosition = Vector3.zero;
         }
     }
     public void SetPosition(int x, int y)   // to instantiate the fruit object in same position as the background tile
@@ -34,47 +37,87 @@ public class Gem : MonoBehaviour
         gemPosition = new Vector2Int(x, y);
     }
 
-    public void StoreGems(Vector2Int gemPositionBoard, BoardBehaviour bourd) // storing for future use
+    public void StoreGems(Vector2Int gemPositionBoard, BoardBehaviour board) // storing for future use
     {
         gemPosition = gemPositionBoard;
-        boardBehaviour = bourd;
+        boardBehaviour = board;
     }
 
     private void OnMouseDown()
     {
-        firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); 
+        firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Debug.Log(firstTouchPosition);
-        mousePressed = false;
+        Debug.Log("OnMouseDown()");
     }
 
     private void OnMouseUp()
     {
         finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Debug.Log(finalTouchPosition);
-        mousePressed = true;
+        Debug.Log("OnMouseUp()");
+        SwapAngle();
+
     }
 
     void SwapAngle()
     {
         Vector2 swapDirection = finalTouchPosition - firstTouchPosition;
         swapAngle = Mathf.Atan2(swapDirection.y, swapDirection.x) * Mathf.Rad2Deg;
+        Debug.Log($"SWAP ANGLE: {swapAngle}");
 
-        if (swapAngle > -45 && swapAngle <= 45)
+        if (Vector3.Distance(firstTouchPosition, finalTouchPosition) > threshold)
         {
-            Debug.Log("Swipe Right");
+            if (swapAngle > -45 && swapAngle <= 45)
+            {
+                Debug.Log("Swipe Right");
+                SwapRight();
+            }
+            else if (swapAngle > 45 && swapAngle <= 135)
+            {
+                Debug.Log("Swipe Up");
+                SwapUp();
+            }
+            else if (swapAngle > 135 || swapAngle <= -135)
+            {
+                Debug.Log("Swipe Left");
+                SwapLeft();
+            }
+            else if (swapAngle < -45 && swapAngle >= -135)
+            {
+                Debug.Log("Swipe Down");
+                SwapDown();
+            }
         }
-        else if (swapAngle > 45 && swapAngle <= 135)
-        {
-            Debug.Log("Swipe Up");
-        }
-        else if (swapAngle > 135 || swapAngle <= 180)
-        {
-            Debug.Log("Swipe Left");
-        }
-        else if (swapAngle > -135 && swapAngle <= -45)
-        {
-            Debug.Log("Swipe Down");
-        }
-
     }
+
+    void SwapRight()
+    {
+        SwapFruits(gridX + 1, gridY);
+    }
+
+    void SwapLeft()
+    {
+        SwapFruits(gridX - 1, gridY);
+    }
+
+    void SwapUp()
+    {
+        SwapFruits(gridX, gridY + 1);
+    }
+
+    void SwapDown()
+    {
+        SwapFruits(gridX, gridY - 1);
+    }
+
+    void SwapFruits(int targetX, int targetY)
+    {
+        Gem targetGem = boardBehaviour.GetGem(targetX, targetY);
+
+        boardBehaviour.gemReferences[gridX, gridY] = targetGem;
+        (gridX, gridY, targetGem.gridX, targetGem.gridY) = (targetGem.gridX, targetGem.gridY, gridX, gridY);
+        (transform.position, targetGem.transform.position) = (targetGem.transform.position, transform.position);
+    }
+
+
 }
