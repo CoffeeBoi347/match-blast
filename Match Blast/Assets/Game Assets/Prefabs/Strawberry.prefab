@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8693311798573558981}
   - component: {fileID: 7521660130711063670}
   - component: {fileID: 5341736534592174833}
+  - component: {fileID: -9022944564240972469}
   m_Layer: 0
   m_Name: Strawberry
   m_TagString: Untagged
@@ -104,6 +105,7 @@ MonoBehaviour:
   gemPosition: {x: 0, y: 0}
   firstTouchPosition: {x: 0, y: 0}
   finalTouchPosition: {x: 0, y: 0}
+  threshold: 0.5
 --- !u!61 &5341736534592174833
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -149,3 +151,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.69, y: 6.26}
   m_EdgeRadius: 0
+--- !u!114 &-9022944564240972469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4146409001489995145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f6506f7b4349634aa7d9c59affe6da8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeGem: 4

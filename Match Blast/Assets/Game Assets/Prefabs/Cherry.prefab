@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5134797856113801581}
   - component: {fileID: 7320344863977504889}
   - component: {fileID: -8838512223557349787}
+  - component: {fileID: -4645927033637130179}
   m_Layer: 0
   m_Name: Cherry
   m_TagString: Untagged
@@ -104,6 +105,7 @@ MonoBehaviour:
   gemPosition: {x: 0, y: 0}
   firstTouchPosition: {x: 0, y: 0}
   finalTouchPosition: {x: 0, y: 0}
+  threshold: 0.5
 --- !u!61 &-8838512223557349787
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -149,3 +151,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.6, y: 3.6}
   m_EdgeRadius: 0
+--- !u!114 &-4645927033637130179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5192889114649464305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f6506f7b4349634aa7d9c59affe6da8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeGem: 2
